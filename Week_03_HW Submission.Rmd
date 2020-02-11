@@ -54,14 +54,17 @@ select=worms:treated)
 untreated<- subset(WormSheep, treated=="untreated",
 select=worms:treated)
 
-boxplot(WormSheep$worms~WormSheep$treated,names=c("treated","untreated"),ylab="Number of Worms",xlab="treated",main="Worms in Sheep")
 
+boxplot(WormSheep$worms~WormSheep$treated,names=c("treated","untreated"),ylab="Number of Worms",xlab="treated",main="Worms in Sheep")
 par(mfrow=c(1,2),mar=c(4,4,6,4))
+
 hist(treated$worms,main="Worms per Treated sheep",xlab="Number of Worms")
 hist(untreated$worms,main="Worms per Untreated sheep",xlab="Number of Worms")
 
-qqnorm(treated$worms,main = "Treated Sheep")
-qqline(treated$worms)
+qqnorm(treated$worms,main = "Treated Sheep",
+       xlab = "Theoretical Quantiles", ylab = "Sample Quantiles")
+qqline(treated$worms,main = "Treated Sheep",
+       xlab = "Theoretical Quantiles", ylab = "Sample Quantiles")
 
 qqnorm(untreated$worms,main = "Untreated Sheep",
        xlab = "Theoretical Quantiles", ylab = "Sample Quantiles")
@@ -146,10 +149,6 @@ $$H_0: \mu_\mbox{treated} = \mu_\mbox{untreated}$$
 
 $$H_0: \mu_\mbox{treated}  \neq  \mu_\mbox{untreated}$$
 
-NOTE: You can typeset hypotheses like this (using LaTeX):
-$$H_0: \mu_\mbox{boys} = \mu_\mbox{girls}$$
-$$H_a: \mu_\mbox{boys} \neq \mu_\mbox{girls}$$
-
 
 #### Step 2
 
@@ -168,7 +167,7 @@ State both a statistical conclusion at $\alpha=0.05$ and interpret it in the con
 
 #### -|-|-|-|-|-|-|-|-|-|-|- Answer 1g.step3 -|-|-|-|-|-|-|-|-|-|-|-
 
-at $\alpha=0.05$ the null hypothesis is rejected. P-value = .002 and  $\alpha=0.05$. There is not sufficient evidence to suggest that  mean of worms in treated sheep is equal to the mean of worms in untreated sheep. 
+at $\alpha=0.05$ the null hypothesis is rejected. $P-value = .002$ and  $\alpha=0.05$. There is not sufficient evidence to suggest that the mean of worms in treated sheep is equal to the mean of worms in untreated sheep. 
 
 ---
 
@@ -208,7 +207,13 @@ Load the dataset delays from the DS705data package.
 ### -|-|-|-|-|-|-|-|-|-|-|- Answer 2a -|-|-|-|-|-|-|-|-|-|-|-
 
 ```{r}
-# Insert your R code here.
+data("delays")
+summary(delays)
+Omega  <- subset(delays, airline=="Omega",
+select=delay:airline)
+
+Skybird  <- subset(delays, airline=="Skybird",
+select=delay:airline)
 
 ```
 
@@ -221,9 +226,25 @@ Begin by exploring the sample means, medians, and standard deviations for each a
 ### -|-|-|-|-|-|-|-|-|-|-|- Answer 2b -|-|-|-|-|-|-|-|-|-|-|-
 
 ```{r}
-# Insert your R code here.
+
+mean(Omega$delay)
+sd(Omega$delay)
+median(Omega$delay)
+
+mean(Skybird$delay)
+sd(Skybird$delay)
+median(Skybird$delay)
+
+par(mfrow=c(1,1))
+
+
+
+
 
 ```
+
+
+
 
 ---
 
@@ -236,7 +257,19 @@ Discuss the aspects of the plots that are relevant to the construction of the be
 ### -|-|-|-|-|-|-|-|-|-|-|- Answer 2b -|-|-|-|-|-|-|-|-|-|-|-
 
 ```{r}
-# Insert your R code here.
+
+par(mfrow=c(1,2),mar=c(4,4,6,4))
+boxplot(Omega$delay,)
+boxplot(Skybird$delay)
+hist(Omega$delay)
+hist(Skybird$delay)
+qqnorm(Omega$delay)
+qqline(Omega$delay)
+
+
+qqnorm(Skybird$delay)
+qqline(Skybird$delay)
+
 
 ```
 
