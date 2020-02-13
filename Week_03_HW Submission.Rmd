@@ -56,6 +56,7 @@ select=worms:treated)
 
 
 boxplot(WormSheep$worms~WormSheep$treated,names=c("treated","untreated"),ylab="Number of Worms",xlab="treated",main="Worms in Sheep")
+
 par(mfrow=c(1,2),mar=c(4,4,6,4))
 
 hist(treated$worms,main="Worms per Treated sheep",xlab="Number of Worms")
@@ -159,6 +160,9 @@ Use R to generate the output for the test you selected.
 ```{r}
 t.test(WormSheep$worms~ WormSheep$treated, paired = TRUE, alternative = "less")
 
+
+
+
 ```
 
 #### Step 3
@@ -215,6 +219,8 @@ select=delay:airline)
 Skybird  <- subset(delays, airline=="Skybird",
 select=delay:airline)
 
+
+
 ```
 
 ---
@@ -259,10 +265,10 @@ Discuss the aspects of the plots that are relevant to the construction of the be
 ```{r}
 
 par(mfrow=c(1,2),mar=c(4,4,6,4))
-boxplot(Omega$delay,)
-boxplot(Skybird$delay)
-hist(Omega$delay)
-hist(Skybird$delay)
+boxplot(Omega$delay,main='Omega Delays')
+boxplot(Skybird$delay,main='Skybird Delays')
+hist(Omega$delay, main='Omega Delays',xlab='Delay in hours')
+hist(Skybird$delay,main='Skybird Delays',xlab='Delay in hours')
 qqnorm(Omega$delay)
 qqline(Omega$delay)
 
@@ -273,8 +279,7 @@ qqline(Skybird$delay)
 
 ```
 
-
-Replace this text with your answer.
+The boxplots,hisatograms and probability plots show that both samples appear to be right-skewed and not normally distributed. The box plots show several outliers for each sample
 
 ---
 
@@ -289,11 +294,21 @@ State the hypotheses and conclusion of the test. Include the P-value in your con
 ### -|-|-|-|-|-|-|-|-|-|-|- Answer 2c -|-|-|-|-|-|-|-|-|-|-|-
 
 ```{r}
-# Insert your R code here.
-
+shapiro.test(Omega$delay)
+shapiro.test(Skybird$delay) 
+ 
 ```
 
-Replace this text with your answer.
+H_0:Omega population is normally distributed
+H_1:Omega  population is NOT normally distributed
+
+Conclusion - the p-value for the Omega dataset is 6.027e-05 which is less than .05 so we reject the null hypothesis. $p>α$
+
+
+H_0:Skybird population is normally distributed
+H_1:Skybird  population is NOT normally distributed
+
+Conclusion - the p-value for the Skybird dataset is 0.0006031 which is less than .05 so we reject the null hypothesis. $p>α$
  
 ---
 
@@ -307,9 +322,9 @@ State the null and alternative hypotheses for the test (in words).
  
 #### -|-|-|-|-|-|-|-|-|-|-|- Answer 2d.step1 -|-|-|-|-|-|-|-|-|-|-|-
 
-Replace this text with your answer.
+$H0$ - The distributions for Omega and Skybird are identical for the past 10 years.
 
-
+$H1$ -  The distributions for Omega and Skybird are  Not identical for the past 10 years.
 #### Step 2
 
 Use R to generate the output for the test you selected.
@@ -317,18 +332,18 @@ Use R to generate the output for the test you selected.
 #### -|-|-|-|-|-|-|-|-|-|-|- Answer 2d.step2 -|-|-|-|-|-|-|-|-|-|-|-
 
 ```{r}
-# Insert your R code here.
+wilcox.test(delay~airline,data=delays,conf.int=TRUE,conf.level = 0.90)
+
 
 ```
 
 #### Step 3
 
-State both a statistical conclusion at $\alpha=0.1$ and interpret it in the context of the problem.
+
 
 #### -|-|-|-|-|-|-|-|-|-|-|- Answer 2d.step3 -|-|-|-|-|-|-|-|-|-|-|-
 
-Replace this text with your answer.
-
+Based upon the results of the Wilcoxon rank sum test we conclude that we have strong evidence to not reject $H0$. There is insufficient evidence to conclude that the distributions of the delay times for Omega and Starbird are shifted from  each other.(P= .8173).  With 90% confidence the shift in the distribution of delay times for Omega and Starbird is between -.33 and .24 hours.
 ---
 
 ### Part 2e
