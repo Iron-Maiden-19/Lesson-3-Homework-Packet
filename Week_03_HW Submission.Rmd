@@ -2,9 +2,7 @@
 title: 'Two-Sample Inference Procedures for Population Central Values'
 author: "YJim Ryan"
 date: "02/11/2020y"
-output: 
-  html_document: 
-    self_contained: no
+output: word_document
 fontsize: 12pt
 ---
 
@@ -123,17 +121,12 @@ Conduct an appropriate test to determine if the worm counts in each population c
 ### -|-|-|-|-|-|-|-|-|-|-|- Answer 1f -|-|-|-|-|-|-|-|-|-|-|-
 
 ```{r}
-mean(treated$worms); sd(treated$worms)
 
-mean(untreated$worms); sd(untreated$worms)
-
-shapiro.test(treated$worms)
 shapiro.test(untreated$worms)
 
-
-
+shapiro.test(untreated$worms)
 ```
-
+The  p-value of  .5491 is large enough that the nornality of the number of worms would not be rejected at the 5% level of significance.
 ---
 
 ### Part 1g	
@@ -335,6 +328,7 @@ Use R to generate the output for the test you selected.
 wilcox.test(delay~airline,data=delays,conf.int=TRUE,conf.level = 0.90)
 
 
+
 ```
 
 #### Step 3
@@ -353,11 +347,13 @@ Construct the most appropriate 95% confidence interval to compare population cen
 ### -|-|-|-|-|-|-|-|-|-|-|- Answer 2e -|-|-|-|-|-|-|-|-|-|-|-
 
 ```{r}
-# Insert your R code here.
+
+wilcox.test(delay~airline,data=delays,conf.int=TRUE)
+
 
 ```
 
-Replace this text with your answer.
+With 95% Confidence, the shift in the distributions of delay times for Omega and Skybird airlines is between -.33 and .24.
 
 ---
 
@@ -367,7 +363,7 @@ Did you use the Welch t-test and interval or the Wilcoxon rank sum test with the
 
 ### -|-|-|-|-|-|-|-|-|-|-|- Answer 2f -|-|-|-|-|-|-|-|-|-|-|-
 
-Replace this text with your answer.
+I used the Wilcoxon Rank sum test. The reason I used this is because when I performed the welch-shapiro test, I rejected the null hypothesis which means that the data is not normally distributed. To perform a T-test, the data must be normally distributed. The null hypothesis that the distributions were equal was not rejected. Zero is included in the confidence interval which means there is not sufficient evidence to claim that the population means are different.
 
 ---
 
@@ -388,8 +384,25 @@ Construct a 95% bootstrap confidence interval to compare population medians for 
 ### -|-|-|-|-|-|-|-|-|-|-|- Answer 2h -|-|-|-|-|-|-|-|-|-|-|-
 
 ```{r}
-# Insert your R code here.
+library(boot)
 
+
+
+bootMedian <- function(x, i){
+  #x is a vector of data
+  # i is a vector of indices for the resampled elements of x
+  return(median(x[i])) # gets returned
+}
+
+boot.object <- boot(delays$delay,bootMedian,R=2000)
+
+hist(boot.object$t,breaks =40,main='t',xlab='sample mean',yaxt = 'n')
+str(boot.object)
+plot(boot.object)
+BCI <- boot.ci(boot.object,conf = .95,type="bca")
+BCI
+
+ 
 ```
 
-Replace this text with your answer.
+The interval retuirned by the bootstrap method is .91 and 1.48. This is different than the  the produced from the wilcox.test method. With the wilcox.test method,zero was contained in the interval  which means that there is not sufficient evidence to claim that the population means are different.  We are dealinhg with medians in the bootstrap method but the fact that both are positive indicates that there is sufficient evidence to conclude that the the population medians are different.
